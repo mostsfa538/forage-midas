@@ -2,6 +2,8 @@ package com.jpmc.midascore.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class UserRecord {
 
@@ -14,6 +16,12 @@ public class UserRecord {
 
     @Column(nullable = false)
     private float balance;
+
+    @OneToMany(mappedBy = "sender", fetch = FetchType.LAZY)
+    private List<TransactionRecord> sentTransactions;
+
+    @OneToMany(mappedBy = "recipient", fetch = FetchType.LAZY)
+    private List<TransactionRecord> receivedTransactions;
 
     protected UserRecord() {
     }
