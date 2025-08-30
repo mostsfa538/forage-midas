@@ -7,8 +7,24 @@ import org.springframework.stereotype.Service;
 @Service
 public class TransactionListener {
 
+    private final TransactionsServices transactionsServices;
+
+    public TransactionListener(TransactionsServices transactionsServices) {
+        this.transactionsServices = transactionsServices;
+    }
+
     @KafkaListener(topics = "${general.kafka-topic}", groupId = "midas-consumer")
-    public void listen(Transaction message) {
-        System.out.println("Raw message: " + message.getAmount());
+    public void listen(Transaction transaction) {
+        System.out.println("Received Transaction: sender=" + transaction.getSenderId()
+                + ", recipient=" + transaction.getRecipientId()
+                + ", amount=" + transaction.getAmount());
+
+        // Process the transaction
+        try {
+            transactionsServices.processTransaction(transaction);
+        } catch (RuntimeException e) {
+            System.err.println("Failed to process transaction: " + e.getMessage());
+            // optionally save to a "failed transactions" table
+        }
     }
 }

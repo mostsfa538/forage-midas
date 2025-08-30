@@ -18,6 +18,8 @@ public class TransactionRecord {
     @Column(name = "amount")
     private float amount;
 
+    private float incentive;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender_id", nullable = false, insertable = false, updatable = false)
     private UserRecord sender;
@@ -29,10 +31,11 @@ public class TransactionRecord {
     public TransactionRecord() {
     }
 
-    public TransactionRecord(long senderId, long recipientId, float amount) {
+    public TransactionRecord(Long senderId, Long recipientId, float amount, float incentive) {
         this.senderId = senderId;
         this.recipientId = recipientId;
         this.amount = amount;
+        this.incentive = incentive;
     }
 
     public long getSenderId() {
@@ -61,5 +64,13 @@ public class TransactionRecord {
 
     public void setAmount(float amount) {
         this.amount = amount;
+    }
+
+    public float getIncentive() {
+        return incentive;
+    }
+
+    public void setIncentive(float incentive) {
+        this.incentive = incentive;
     }
 }
