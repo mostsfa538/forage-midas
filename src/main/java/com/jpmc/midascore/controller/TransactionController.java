@@ -1,22 +1,20 @@
 package com.jpmc.midascore.controller;
 
-import com.jpmc.midascore.dto.Incentive;
-import com.jpmc.midascore.foundation.Transaction;
-import com.jpmc.midascore.services.TransactionsServices;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import com.jpmc.midascore.foundation.Balance;
+import com.jpmc.midascore.services.UserServices;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class TransactionController {
-    private final TransactionsServices transactionsServices;
+    private final UserServices userServices;
 
-    public TransactionController(TransactionsServices transactionsServices) {
-        this.transactionsServices = transactionsServices;
+    public TransactionController(UserServices userServices) {
+        this.userServices = userServices;
     }
 
-    @PostMapping("/transaction")  // Changed from "/incentive"
-    public float processTransaction(@RequestBody Transaction transaction) {
-        return transactionsServices.processTransaction(transaction);
+    @GetMapping("/balance")
+    public ResponseEntity<Balance> getBalance(@RequestParam Long userId) {
+        return ResponseEntity.ok().body(userServices.getBalance(userId));
     }
 }
