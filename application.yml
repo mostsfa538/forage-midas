@@ -14,3 +14,4 @@ spring:
 
 general:
   kafka-topic: transactions-0
+  incentive-api-url: http://localhost:33400
